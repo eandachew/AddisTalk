@@ -1,0 +1,103 @@
+/* -------- Global -------- */
+body {
+    background-color: #f5f7fa;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* -------- Page Title -------- */
+.page-title {
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* -------- Post Cards -------- */
+.post-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    height: 100%;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.post-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* -------- Post Content -------- */
+.post-title {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.post-meta {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.post-excerpt {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #555;
+    flex-grow: 1;
+}
+
+/* -------- Read More Button -------- */
+.read-more {
+    align-self: flex-start;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+.read-more:hover {
+    color: #0a58ca;
+}
+
+/* -------- Pagination -------- */
+.pagination-wrapper {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    padding: 0;
+}
+
+.pagination li a {
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    color: #333;
+    font-weight: 500;
+}
+
+.pagination li a:hover {
+    background: #0d6efd;
+    color: #ffffff;
+    border-color: #0d6efd;
+}
+
+.pagination .current {
+    padding: 8px 14px;
+    font-weight: 600;
+}
