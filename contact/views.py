@@ -5,8 +5,6 @@ from django.conf import settings
 from .forms import ContactForm
 from .models import ContactMessage
 
-# Create your views here.
-
 def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -24,11 +22,11 @@ def contact_view(request):
                     Subject: {contact_message.subject}
                     Message: {contact_message.message}
                     
-                    Received: {contact_message.created_at}
+                    Received: {contact_message.created_on}
                     """,
                     settings.DEFAULT_FROM_EMAIL,
-                    [settings.CONTACT_EMAIL],  # Add this to settings.py
-                    fail_silently=False,
+                    [settings.DEFAULT_FROM_EMAIL],  # Send to yourself for now
+                    fail_silently=True,  # Change to True to prevent errors if email fails
                 )
                 
                 # Send confirmation email to user
@@ -49,13 +47,13 @@ def contact_view(request):
                     """,
                     settings.DEFAULT_FROM_EMAIL,
                     [contact_message.email],
-                    fail_silently=False,
+                    fail_silently=True,
                 )
                 
                 messages.success(request, 'Your message has been sent successfully! We will contact you soon.')
             except Exception as e:
                 # Still save the message even if email fails
-                messages.warning(request, 'Message saved. There was an issue sending email confirmation.')
+                messages.success(request, 'Your message has been received!')
             
             return redirect('contact')
     else:
@@ -70,5 +68,5 @@ def message_list(request):
         messages.error(request, 'Access denied.')
         return redirect('home')
     
-    messages_list = ContactMessage.objects.all()
+    messages_list = ContactMessage.objects.all().order_by('-created_on')
     return render(request, 'contact/message_list.html', {'messages': messages_list})

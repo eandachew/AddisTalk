@@ -1,13 +1,12 @@
 from django.contrib import admin
 from .models import ContactMessage
 
-# Register your models here.
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ('subject', 'name', 'email', 'created_at', 'is_read', 'resolved')
-    list_filter = ('is_read', 'resolved', 'created_at')
+    list_display = ('subject', 'name', 'email', 'created_on', 'is_read', 'resolved')  
+    list_filter = ('is_read', 'resolved', 'created_on')  
     search_fields = ('name', 'email', 'subject', 'message')
-    readonly_fields = ('created_at',)
+    readonly_fields = ('created_on',) 
     list_per_page = 20
     actions = ['mark_as_read', 'mark_as_resolved']
     

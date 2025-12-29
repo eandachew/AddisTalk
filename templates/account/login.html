@@ -1,46 +1,121 @@
-{% extends "account/base.html" %}
-
+{% extends "base.html" %}
 {% load i18n %}
-{% load account socialaccount %}
-
-{% block head_title %}{% trans "Sign In" %}{% endblock head_title %}
 
 {% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0">
+                <!-- Header -->
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-0">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        {% trans "Sign In" %}
+                    </h3>
+                    <p class="mb-0 mt-2 opacity-75">
+                        Welcome back to AddisTalk
+                    </p>
+                </div>
 
-<h1>{% trans "Sign In" %}</h1>
+                <!-- Body -->
+                <div class="card-body p-4 p-md-5">
+                    <!-- Signup Prompt -->
+                    <div class="text-center mb-4">
+                        <p class="mb-0">
+                            {% trans "Don't have an account?" %}
+                            <a href="{% url 'account_signup' %}" class="text-primary fw-semibold text-decoration-none">
+                                {% trans "Sign up here" %}
+                            </a>
+                        </p>
+                    </div>
 
-{% get_providers as socialaccount_providers %}
+                    <!-- Form -->
+                    <form class="login" method="POST" action="{% url 'account_login' %}">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
 
-{% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+                        <!-- Login Field -->
+                        <div class="mb-3">
+                            <label for="id_login" class="form-label fw-semibold">
+                                <i class="bi bi-person-circle me-1"></i>
+                                {% trans "Username or Email" %} *
+                            </label>
+                            <input type="text" name="login" 
+                                   class="form-control {% if form.login.errors %}is-invalid{% endif %}" 
+                                   id="id_login" 
+                                   placeholder="Username or email" 
+                                   value="{{ form.login.value|default:'' }}"
+                                   required autofocus>
+                            {% if form.login.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.login.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
 
-<div class="socialaccount_ballot">
+                        <!-- Password Field -->
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label fw-semibold">
+                                <i class="bi bi-key me-1"></i>
+                                {% trans "Password" %} *
+                            </label>
+                            <input type="password" name="password" 
+                                   class="form-control {% if form.password.errors %}is-invalid{% endif %}" 
+                                   id="id_password" 
+                                   placeholder="Your password" 
+                                   required>
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.password.errors.0 }}
+                                </div>
+                            {% endif %}
+                            <div class="text-end mt-1">
+                                <a href="{% url 'account_reset_password' %}" class="small text-decoration-none">
+                                    {% trans "Forgot Password?" %}
+                                </a>
+                            </div>
+                        </div>
 
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
+                        <!-- Remember Me -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remember" id="id_remember">
+                                <label class="form-check-label" for="id_remember">
+                                    {% trans "Remember me" %}
+                                </label>
+                            </div>
+                        </div>
 
-  <div class="login-or">{% trans 'or' %}</div>
+                        <!-- Hidden Redirect Field -->
+                        {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                        {% endif %}
 
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg py-3">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
+                                {% trans "Sign In" %}
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Guest Note -->
+                    <div class="text-center mt-4 pt-3 border-top">
+                        <p class="small text-muted mb-0">
+                            Continue as a guest to read posts. Sign in to comment and engage.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-{% include "socialaccount/snippets/login_extra.html" %}
-
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
-
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
-
-{% endblock content %}
+{% endblock %}  
