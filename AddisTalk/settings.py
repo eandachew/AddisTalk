@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'AddisTalk.wsgi.application'
 #}
 
 DATABASES = {
-    'default': dj_database_url.parse(str(os.environ.get("DATABASE_URL")))
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
 
 CSRF_TRUSTED_ORIGINS = [
