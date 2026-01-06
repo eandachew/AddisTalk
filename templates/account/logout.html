@@ -1,21 +1,52 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
+{% load static i18n %}
 
-{% load i18n %}
-
-{% block head_title %}{% trans "Sign Out" %}{% endblock head_title %}
+{% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Out" %}</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg">
+                <div class="card-body p-4 p-md-5 text-center">
+                    <div class="mb-5">
+                        <div class="mb-4">
+                            <i class="bi bi-box-arrow-right display-1 text-primary"></i>
+                        </div>
+                        <h1 class="display-6 fw-bold text-primary">
+                            {% trans "Sign Out" %}
+                        </h1>
+                        <p class="lead text-muted">
+                            {% trans "Are you sure you want to sign out?" %}
+                        </p>
+                    </div>
 
-<p>{% trans 'Are you sure you want to sign out?' %}</p>
-
-<form method="post" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-  <button type="submit">{% trans 'Sign Out' %}</button>
-</form>
-
-
-{% endblock content %}
+                    <div class="card border-0 bg-light">
+                        <div class="card-body p-4">
+                            <form method="POST" action="{% url 'account_logout' %}">
+                                {% csrf_token %}
+                                
+                                {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+                                {% endif %}
+                                
+                                <div class="d-grid gap-3">
+                                    <button class="btn btn-danger btn-lg" type="submit">
+                                        <i class="bi bi-box-arrow-right me-2"></i>
+                                        {% trans "Yes, Sign Out" %}
+                                    </button>
+                                    
+                                    <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">
+                                        <i class="bi bi-arrow-left me-2"></i>
+                                        {% trans "No, Go Back" %}
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
