@@ -26,5 +26,6 @@ urlpatterns = [
    
     # Other apps
     path('about/', include('about.urls')),
+    path("accounts/", include("allauth.urls")),
     path('contact', include('contact.urls')),
 ]
