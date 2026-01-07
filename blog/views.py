@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import Post, Comment
 
@@ -14,7 +15,7 @@ class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by('-created_on')
     template_name = "blog/index.html"
     context_object_name = 'post_list'
-    paginate_by = 6
+    paginate_by = 10  # Optional: add pagination
 
 
 def post_detail(request, slug):
@@ -139,6 +140,31 @@ def comment_delete(request, slug, comment_id):
     # This prevents accidental deletion via GET requests
     messages.warning(request, 'Please use the delete button in the comments section.')
     return redirect('post_detail', slug=slug)
+
+
+@login_required
+@require_POST
+def post_like(request, slug):
+    """
+    View to handle post likes (AJAX).
+    """
+    post = get_object_or_404(Post, slug=slug, status=1)
+    
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+        liked = False
+        message = "You unliked this post."
+    else:
+        post.likes.add(request.user)
+        liked = True
+        message = "You liked this post."
+    
+    return JsonResponse({
+        'liked': liked,
+        'like_count': post.likes.count(),
+        'message': message
+    })
+
 
 @login_required
 def comment_confirm_delete(request, slug, comment_id):

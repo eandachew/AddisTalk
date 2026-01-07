@@ -655,6 +655,7 @@ main {
     background: linear-gradient(135deg, #343a40 0%, #495057 100%) !important;
 }
 
+
 /* Responsive auth forms */
 @media (max-width: 576px) {
     .card-body {
