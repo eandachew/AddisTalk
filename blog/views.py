@@ -15,7 +15,7 @@ class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by('-created_on')
     template_name = "blog/index.html"
     context_object_name = 'post_list'
-    paginate_by = 10  # Optional: add pagination
+    paginate_by = 6
 
 
 def post_detail(request, slug):

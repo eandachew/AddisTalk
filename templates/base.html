@@ -18,6 +18,7 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
@@ -160,7 +161,7 @@
     
     <!-- Custom JavaScript Block -->
     {% block extras %}
-    <script src="{% static 'contact/js/contact.js' %}"></script>
+    <!-- This is EMPTY in base.html, child templates fill it -->
     {% endblock %}
 </body>
 </html>
