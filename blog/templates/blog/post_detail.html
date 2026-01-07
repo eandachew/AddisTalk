@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <div class="container mt-4">
@@ -54,8 +55,6 @@
                         </div>
                     </div>
                     
-                    <!-- Like Section -->
-                
                     <!-- Post Footer -->
                     <div class="border-top pt-3 text-muted small">
                         <div class="d-flex justify-content-between">
@@ -120,7 +119,136 @@
                 </div>
                 {% endif %}
 
+                <!-- Comments List -->
+                {% if comments %}
+                <div class="comments-list">
+                    {% for comment in comments %}
+                    <div class="card mb-3 {% if comment.author == user %}border-primary{% endif %}">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <!-- Comment Header -->
+                                <div class="d-flex align-items-center">
+                                    <div class="user-avatar me-3">
+                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                             style="width: 40px; height: 40px;">
+                                            {{ comment.author.username|slice:":1"|upper }}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ comment.author.username }}</h6>
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock me-1"></i>
+                                            {{ comment.created_on|timesince }} ago
+                                        </small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Comment Actions -->
+                                {% if comment.author == user %}
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                                            type="button" 
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'comment_edit' post.slug comment.id %}">
+                                                <i class="bi bi-pencil me-2"></i>Edit
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <button type="button" 
+                                                    class="dropdown-item text-danger" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deleteComment{{ comment.id }}">
+                                                <i class="bi bi-trash me-2"></i>Delete
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Delete Modal -->
+                                <div class="modal fade" id="deleteComment{{ comment.id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete your comment?</p>
+                                                <div class="alert alert-warning">
+                                                    <i class="bi bi-exclamation-triangle me-2"></i>
+                                                    This action cannot be undone.
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Cancel
+                                                </button>
+                                                <form method="POST" action="{% url 'comment_delete' post.slug comment.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="bi bi-trash me-2"></i>Delete Comment
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
                             
+                            <!-- Comment Body -->
+                            <div class="comment-body mt-3">
+                                <p class="mb-0">{{ comment.body|linebreaks }}</p>
+                            </div>
+                            
+                            <!-- Comment Approval Status -->
+                            <div class="comment-footer mt-3 pt-2 border-top">
+                                {% if comment.approved %}
+                                <small class="text-success">
+                                    <i class="bi bi-check-circle me-1"></i>Approved
+                                </small>
+                                {% else %}
+                                <small class="text-warning">
+                                    <i class="bi bi-clock me-1"></i>Awaiting approval
+                                </small>
+                                {% endif %}
+                                
+                                {% if user == comment.author and not comment.approved %}
+                                <small class="text-muted ms-3">
+                                    <i class="bi bi-info-circle me-1"></i>Only you can see this until approved
+                                </small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                {% else %}
+                <!-- No Comments Message -->
+                <div class="text-center py-5">
+                    <i class="bi bi-chat-square-text display-1 text-muted mb-4"></i>
+                    <h3 class="h4 mb-3">No Comments Yet</h3>
+                    <p class="text-muted mb-4">
+                        Be the first to share your thoughts on this post!
+                    </p>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'account_login' %}" class="btn btn-primary">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login to Comment
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extras %}
