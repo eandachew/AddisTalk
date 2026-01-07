@@ -55,20 +55,20 @@
                         </div>
                     </div>
                     
-                    <!-- Like Section -->
+                    <!-- Like Section (UPDATED FOR AJAX) -->
                     <div class="like-section mb-4">
                         <div class="d-flex align-items-center">
                             {% if user.is_authenticated %}
-                            <form method="POST" action="{% url 'post_like' post.slug %}" 
-                                  id="like-form" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-like {% if user_has_liked %}btn-danger{% else %}btn-outline-danger{% endif %}">
-                                    <i class="bi bi-heart{% if user_has_liked %}-fill{% endif %}"></i>
-                                    <span id="like-count">{{ post.likes.count }}</span>
-                                </button>
-                            </form>
+                            <button type="button" 
+                                    class="btn btn-like {% if user_has_liked %}btn-danger{% else %}btn-outline-danger{% endif %}"
+                                    id="like-button"
+                                    data-post-slug="{{ post.slug }}"
+                                    data-liked="{{ user_has_liked|yesno:'true,false' }}">
+                                <i class="bi {% if user_has_liked %}bi-heart-fill{% else %}bi-heart{% endif %}" id="heart-icon"></i>
+                                <span id="like-count">{{ post.likes.count }}</span>
+                            </button>
                             {% else %}
-                            <a href="{% url 'account_login' %}" class="btn btn-outline-danger">
+                            <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-outline-danger">
                                 <i class="bi bi-heart"></i>
                                 <span id="like-count">{{ post.likes.count }}</span>
                             </a>
@@ -285,5 +285,6 @@
 {% endblock %}
 
 {% block extras %}
-
+<!-- Load your JavaScript files here -->
+<script src="{% static 'js/like.js' %}"></script>
 {% endblock %}
