@@ -132,25 +132,80 @@
     <footer class="bg-dark text-light py-4 mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 mb-3 mb-md-0">
+                <div class="col-md-4 mb-3 mb-md-0">
                     <h5 class="text-warning">AddisTalk</h5>
                     <p class="text-light-emphasis small">
                         A platform for Ethiopian perspectives and meaningful discussions.
                     </p>
                 </div>
-                <div class="col-md-6">
+                
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="text-warning">World Times</h5>
+                    <div class="world-times">
+                        {% if time_error %}
+                        <small class="text-warning">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            Using estimated times
+                        </small>
+                        {% endif %}
+                        
+                        <div class="time-item mb-2">
+                            <div class="d-flex align-items-center">
+                                <span class="flag-icon me-2">🇮🇪</span>
+                                <div>
+                                    <div class="fw-medium">Ireland</div>
+                                    <small class="text-light-emphasis">
+                                        {{ ireland_time }} ({{ ireland_timezone }})
+                                    </small>
+                                    <div class="very-small text-muted">{{ ireland_date }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="time-item">
+                            <div class="d-flex align-items-center">
+                                <span class="flag-icon me-2">🇪🇹</span>
+                                <div>
+                                    <div class="fw-medium">Ethiopia</div>
+                                    <small class="text-light-emphasis">
+                                        {{ ethiopia_time }} ({{ ethiopia_timezone }})
+                                    </small>
+                                    <div class="very-small text-muted">{{ ethiopia_date }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if time_difference %}
+                        <div class="time-difference mt-2 pt-2 border-top border-secondary">
+                            <small class="text-info">
+                                <i class="bi bi-clock-history me-1"></i>
+                                {{ time_difference }}
+                            </small>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
                     <h5 class="text-warning">Quick Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="{% url 'home' %}" class="text-light-emphasis text-decoration-none">Home</a></li>
                         <li><a href="{% url 'about' %}" class="text-light-emphasis text-decoration-none">About</a></li>
                         <li><a href="{% url 'contact' %}" class="text-light-emphasis text-decoration-none">Contact</a></li>
+                        <li><a href="/admin/" class="text-light-emphasis text-decoration-none">Admin</a></li>
                     </ul>
                 </div>
             </div>
+            
             <hr class="text-secondary my-4">
             <div class="text-center">
                 <p class="mb-0">
                     &copy; {% now "Y" %} AddisTalk. All rights reserved. 
+                    <span class="text-muted mx-2">•</span>
+                    <small class="text-light-emphasis">
+                        <i class="bi bi-globe me-1"></i>
+                        Bridging Ireland & Ethiopia
+                    </small>
                 </p>
             </div>
         </div>
