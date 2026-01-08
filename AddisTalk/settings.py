@@ -35,6 +35,8 @@ ALLOWED_HOSTS = ['.herokuapp.com',
 
 # Cloudinary Configuration
 import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 cloudinary_url = os.environ.get('CLOUDINARY_URL')
 if cloudinary_url:
