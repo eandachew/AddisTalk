@@ -1,8 +1,10 @@
+<!-- blog/templates/blog/post_detail.html -->
 {% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
+<!-- Static Header Image -->
 <div class="text-center mb-4">
     <img src="{% static 'images/header.png' %}" 
          alt="Blog Header" 
@@ -12,7 +14,7 @@
 
 <div class="container mt-4">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
             <!-- Back to Home -->
             <div class="mb-4">
                 <a href="{% url 'home' %}" class="btn btn-outline-secondary">
@@ -21,12 +23,33 @@
             </div>
 
             <!-- Post Content -->
-            <article class="card shadow-sm mb-5">
-                <div class="card-body p-4">
+            <article class="card shadow-lg mb-5 border-0">
+                <!-- Featured Image from Cloudinary -->
+                {% if post.featured_image %}
+                <div class="featured-image-container position-relative">
+                    <img src="{{ post.featured_image.url }}" 
+                         alt="{{ post.title }}"
+                         class="img-fluid rounded-top"
+                         style="width: 100%; max-height: 500px; object-fit: cover;">
+                </div>
+                {% else %}
+                <!-- Fallback static image -->
+                <div class="text-center py-5 bg-light rounded-top">
+                    <img src="{% static 'images/default-post.jpg' %}" 
+                         alt="Default Post Image"
+                         class="img-fluid rounded"
+                         style="max-height: 300px;">
+                    <h1 class="display-5 fw-bold mt-4">{{ post.title }}</h1>
+                </div>
+                {% endif %}
+                
+                <div class="card-body p-5">
                     <!-- Post Title -->
-                    <h1 class="card-title display-5 fw-bold mb-3">{{ post.title }}</h1>
+                    {% if not post.featured_image %}
+                    <h1 class="card-title display-4 fw-bold mb-3">{{ post.title }}</h1>
+                    {% endif %}
                     
-                    <!-- Post Meta Information -->
+                    <!-- Author, Date, Stats -->
                     <div class="post-meta text-muted mb-4 pb-3 border-bottom">
                         <div class="d-flex flex-wrap align-items-center gap-3">
                             <div class="d-flex align-items-center">
@@ -47,6 +70,19 @@
                             </div>
                             
                             <div class="d-flex align-items-center">
+                                <i class="bi bi-clock-history me-2"></i>
+                                <span>
+                                    {% with word_count=post.content|wordcount %}
+                                        {% if word_count < 250 %}
+                                            1 min read
+                                        {% else %}
+                                            {{ word_count|divisibleby:"200"|add:1 }} min read
+                                        {% endif %}
+                                    {% endwith %}
+                                </span>
+                            </div>
+                            
+                            <div class="d-flex align-items-center">
                                 <span class="badge bg-success">
                                     <i class="bi bi-check-circle me-1"></i>
                                     {{ post.get_status_display }}
@@ -56,14 +92,14 @@
                     </div>
                     
                     <!-- Post Body -->
-                    <div class="post-content mb-4">
-                        <div class="content-wrapper">
+                    <div class="post-content mb-5">
+                        <div class="content-wrapper fs-5 lh-base">
                             {{ post.content|linebreaks }}
                         </div>
                     </div>
                     
-                    <!-- Like Section (UPDATED FOR AJAX) -->
-                    <div class="like-section mb-4">
+                    <!-- Like Section -->
+                    <div class="like-section mb-4 p-4 bg-light rounded">
                         <div class="d-flex align-items-center">
                             {% if user.is_authenticated %}
                             <button type="button" 
@@ -81,29 +117,21 @@
                             </a>
                             {% endif %}
                             
-                            <div class="ms-3 text-muted">
-                                <small id="like-text">
+                            <div class="ms-3">
+                                <small id="like-text" class="text-muted">
                                     {% if post.likes.count == 0 %}
-                                        Be the first to like this!
+                                        <i class="bi bi-info-circle me-1"></i>Be the first to like this!
                                     {% elif post.likes.count == 1 %}
-                                        1 person likes this
+                                        <i class="bi bi-heart me-1"></i>1 person likes this
                                     {% else %}
-                                        {{ post.likes.count }} people like this
+                                        <i class="bi bi-hearts me-1"></i>{{ post.likes.count }} people like this
                                     {% endif %}
                                 </small>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Post Footer -->
-                    <div class="border-top pt-3 text-muted small">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <i class="bi bi-clock-history me-1"></i>
-                                Posted {{ post.created_on|timesince }} ago
-                            </div>
-                        </div>
-                    </div>
+                    <!-- REMOVED: Social Sharing section -->
                 </div>
             </article>
 
@@ -128,7 +156,7 @@
                                 <textarea name="body" 
                                           class="form-control" 
                                           rows="4" 
-                                          placeholder="Write your comment here..."
+                                          placeholder="What are your thoughts on this post?"
                                           required></textarea>
                                 <div class="form-text">
                                     <i class="bi bi-info-circle me-1"></i>
@@ -137,7 +165,7 @@
                             </div>
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-send me-2"></i>Submit Comment
+                                    <i class="bi bi-send me-2"></i>Post Comment
                                 </button>
                             </div>
                         </form>
@@ -166,7 +194,6 @@
                     <div class="card mb-3 {% if comment.author == user %}border-primary{% endif %}">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">
-                                <!-- Comment Header -->
                                 <div class="d-flex align-items-center">
                                     <div class="user-avatar me-3">
                                         <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
@@ -182,72 +209,12 @@
                                         </small>
                                     </div>
                                 </div>
-                                
-                                <!-- Comment Actions -->
-                                {% if comment.author == user %}
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
-                                            type="button" 
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                        <i class="bi bi-three-dots"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <a class="dropdown-item" href="{% url 'comment_edit' post.slug comment.id %}">
-                                                <i class="bi bi-pencil me-2"></i>Edit
-                                            </a>
-                                        </li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li>
-                                            <button type="button" 
-                                                    class="dropdown-item text-danger" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#deleteComment{{ comment.id }}">
-                                                <i class="bi bi-trash me-2"></i>Delete
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                                
-                                <!-- Delete Modal -->
-                                <div class="modal fade" id="deleteComment{{ comment.id }}" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Confirm Delete</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to delete your comment?</p>
-                                                <div class="alert alert-warning">
-                                                    <i class="bi bi-exclamation-triangle me-2"></i>
-                                                    This action cannot be undone.
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Cancel
-                                                </button>
-                                                <form method="POST" action="{% url 'comment_delete' post.slug comment.id %}">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger">
-                                                        <i class="bi bi-trash me-2"></i>Delete Comment
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endif %}
                             </div>
                             
-                            <!-- Comment Body -->
                             <div class="comment-body mt-3">
                                 <p class="mb-0">{{ comment.body|linebreaks }}</p>
                             </div>
                             
-                            <!-- Comment Approval Status -->
                             <div class="comment-footer mt-3 pt-2 border-top">
                                 {% if comment.approved %}
                                 <small class="text-success">
@@ -258,12 +225,6 @@
                                     <i class="bi bi-clock me-1"></i>Awaiting approval
                                 </small>
                                 {% endif %}
-                                
-                                {% if user == comment.author and not comment.approved %}
-                                <small class="text-muted ms-3">
-                                    <i class="bi bi-info-circle me-1"></i>Only you can see this until approved
-                                </small>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -271,7 +232,6 @@
                 </div>
                 
                 {% else %}
-                <!-- No Comments Message -->
                 <div class="text-center py-5">
                     <i class="bi bi-chat-square-text display-1 text-muted mb-4"></i>
                     <h3 class="h4 mb-3">No Comments Yet</h3>
@@ -286,12 +246,33 @@
                 </div>
                 {% endif %}
             </section>
+
+            <!-- Author Bio Section -->
+            <div class="author-bio card mt-5">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 text-center">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                                 style="width: 120px; height: 120px;">
+                                <i class="bi bi-person fs-1"></i>
+                            </div>
+                            <h5>{{ post.author.username }}</h5>
+                        </div>
+                        <div class="col-md-9">
+                            <h4>About the Author</h4>
+                            <p class="text-muted">Author information not available.</p>
+                            <a href="#" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-journal-text me-1"></i>View All Posts
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block extras %}
-<!-- Load your JavaScript files here -->
 <script src="{% static 'js/like.js' %}"></script>
 {% endblock %}
