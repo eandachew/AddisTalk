@@ -759,3 +759,42 @@ main {
         font-size: 1rem !important;
     }
 }
+
+/* World Times Styling */
+.world-times {
+    font-size: 0.9rem;
+}
+
+.time-item {
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.time-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.flag-icon {
+    font-size: 1.5rem;
+}
+
+.very-small {
+    font-size: 0.75rem;
+}
+
+.time-difference {
+    font-size: 0.8rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .world-times {
+        font-size: 0.85rem;
+    }
+    
+    .flag-icon {
+        font-size: 1.25rem;
+    }
+}
