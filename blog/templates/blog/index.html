@@ -1,6 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<!-- Add header image -->
+<div class="text-center mb-4">
+    <img src="{% static 'images/header.png' %}" 
+         alt="Blog Header" 
+         class="img-fluid rounded"
+         style="max-height: 200px; width: 100%; object-fit: cover;">
+</div>
+
 <div class="container mt-4">
     <h1>Welcome to AddisTalk</h1>
     <p class="lead">A platform for Ethiopian perspectives and meaningful discussions.</p>
