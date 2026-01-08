@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from urllib.parse import urlparse
 if os.path.isfile('env.py'):
     import env
 
@@ -32,6 +33,16 @@ DEBUG = False
 ALLOWED_HOSTS = ['.herokuapp.com',
                  '127.0.0.1',]
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+url = urlparse(os.environ['CLOUDINARY_URL'])
+cloudinary.config(
+    cloud_name=url.hostname,
+    api_key=url.username,
+    api_secret=url.password
+)
 
 # Application definition
 
