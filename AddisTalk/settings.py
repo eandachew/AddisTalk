@@ -33,16 +33,17 @@ DEBUG = False
 ALLOWED_HOSTS = ['.herokuapp.com',
                  '127.0.0.1',]
 
+# Cloudinary Configuration
 import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
-url = urlparse(os.environ['CLOUDINARY_URL'])
-cloudinary.config(
-    cloud_name=url.hostname,
-    api_key=url.username,
-    api_secret=url.password
-)
+cloudinary_url = os.environ.get('CLOUDINARY_URL')
+if cloudinary_url:
+    url = urlparse(cloudinary_url)
+    cloudinary.config(
+        cloud_name=url.hostname,
+        api_key=url.username,
+        api_secret=url.password
+    )
 
 # Application definition
 
