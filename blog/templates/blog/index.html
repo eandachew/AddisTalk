@@ -1,8 +1,9 @@
+<!-- blog/templates/blog/index.html -->
 {% extends "base.html" %}
 {% load static %}
 
 {% block content %}
-<!-- Add header image -->
+<!-- Static Header Image -->
 <div class="text-center mb-4">
     <img src="{% static 'images/header.png' %}" 
          alt="Blog Header" 
@@ -21,6 +22,22 @@
             {% if post_list %}
                 {% for post in post_list %}
                 <div class="card mb-3">
+                    <!-- Featured Image from Cloudinary -->
+                    {% if post.featured_image %}
+                    <div class="card-img-top-container" style="height: 200px; overflow: hidden;">
+                        <img src="{{ post.featured_image.url }}" 
+                             alt="{{ post.title }}"
+                             class="card-img-top"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    {% else %}
+                    <!-- Fallback if no image -->
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" 
+                         style="height: 200px;">
+                        <i class="bi bi-image text-white" style="font-size: 3rem;"></i>
+                    </div>
+                    {% endif %}
+                    
                     <div class="card-body">
                         <h3 class="card-title">
                             <a href="{% url 'post_detail' post.slug %}" class="text-decoration-none">
@@ -31,9 +48,15 @@
                             By {{ post.author.username }} on {{ post.created_on|date:"F d, Y" }}
                         </p>
                         <p>{{ post.content|truncatewords:30 }}</p>
-                        <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary btn-sm">
-                            Read More
-                        </a>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary btn-sm">
+                                Read More
+                            </a>
+                            <div class="text-muted small">
+                                <i class="bi bi-heart"></i> {{ post.likes.count }}
+                                <i class="bi bi-chat-left-text ms-2"></i> {{ post.comments.count }}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -48,6 +71,7 @@
         </div>
         
         <div class="col-md-4">
+            <!-- About Card -->
             <div class="card">
                 <div class="card-body">
                     <h4>About AddisTalk</h4>
@@ -64,6 +88,7 @@
                 </div>
             </div>
             
+            <!-- Stats Card -->
             <div class="card mt-3">
                 <div class="card-body">
                     <h5>Quick Stats</h5>
