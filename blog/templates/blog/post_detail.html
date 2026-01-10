@@ -194,6 +194,7 @@
                     <div class="card mb-3 {% if comment.author == user %}border-primary{% endif %}">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">
+                                <!-- Comment Header -->
                                 <div class="d-flex align-items-center">
                                     <div class="user-avatar me-3">
                                         <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
@@ -209,6 +210,34 @@
                                         </small>
                                     </div>
                                 </div>
+                                
+                                <!-- Comment Actions - ADDED EDIT/DELETE BUTTONS -->
+                                {% if comment.author == user %}
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                                            type="button" 
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'comment_edit' post.slug comment.id %}">
+                                                <i class="bi bi-pencil me-2"></i>Edit
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <button type="button" 
+                                                    class="dropdown-item text-danger" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deleteComment{{ comment.id }}">
+                                                <i class="bi bi-trash me-2"></i>Delete
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {% endif %}
                             </div>
                             
                             <div class="comment-body mt-3">
@@ -225,9 +254,48 @@
                                     <i class="bi bi-clock me-1"></i>Awaiting approval
                                 </small>
                                 {% endif %}
+                                
+                                <!-- Added message for unapproved comments -->
+                                {% if user == comment.author and not comment.approved %}
+                                <small class="text-muted ms-3">
+                                    <i class="bi bi-info-circle me-1"></i>Only you can see this until approved
+                                </small>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Delete Modal for each comment - ADDED -->
+                    {% if comment.author == user %}
+                    <div class="modal fade" id="deleteComment{{ comment.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirm Delete</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete your comment?</p>
+                                    <div class="alert alert-warning">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>
+                                        This action cannot be undone.
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+                                    <form method="POST" action="{% url 'comment_delete' post.slug comment.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="bi bi-trash me-2"></i>Delete Comment
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                     {% endfor %}
                 </div>
                 
