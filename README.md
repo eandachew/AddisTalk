@@ -26,7 +26,7 @@ This project aims to build a full-featured, interactive blogging platform using 
 ### Home page screenshot. 
 
  <div align="center">
-    <img src="static/images/home_screen.png" alt="image of the homepage hero section">
+    <img src="readme-images/site-images/home_screen.png" alt="image of the homepage hero section">
 </div>
 
  
@@ -230,10 +230,10 @@ So that I can understand what the site offers.
 
   - The database diagram shows a list of items in each object and relationships between each object.    
 
-   <div align="center"><img src="static/images/database_diagram.png" alt="image of the database diagram"></div>
+   <div align="center"><img src="readme-images/site-images/database_diagram.png" alt="image of the database diagram"></div>
 ## Design
 
-
+readme-images/site-images/
 
 ### **🎨 Colour Scheme**
 
