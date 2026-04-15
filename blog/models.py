@@ -20,13 +20,13 @@ class Post(models.Model):
     likes = models.ManyToManyField(
         User, related_name='post_likes', blank=True)
     featured_image = CloudinaryField('image', default='placeholder')
-    
+
     class Meta:
         ordering = ["-created_on"]
-    
+
     def __str__(self):
         return self.title
-    
+
     def number_of_likes(self):
         return self.likes.count()
 
@@ -44,9 +44,9 @@ class Comment(models.Model):
     body = models.TextField()
     approved = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ["created_on"]
-    
+
     def __str__(self):
         return f"Comment by {self.author} on {self.post.title}"

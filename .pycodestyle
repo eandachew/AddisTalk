@@ -1,0 +1,4 @@
+[pycodestyle]
+exclude = .venv,.git,__pycache__,migrations,env.py
+max-line-length = 120
+ignore = E501,E203,W503

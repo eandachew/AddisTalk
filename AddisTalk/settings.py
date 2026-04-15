@@ -10,10 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import cloudinary.api
+import cloudinary.uploader
+import cloudinary
 import os
 import sys
-if os.path.isfile('env.py'):
-    import env
 import dj_database_url
 from pathlib import Path
 from urllib.parse import urlparse
@@ -29,16 +30,13 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'DEVELOPMENT' in os.environ 
+DEBUG = 'DEVELOPMENT' in os.environ
 
 ALLOWED_HOSTS = ['.herokuapp.com',
                  '127.0.0.1',]
 
 
 # Cloudinary Configuration
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 cloudinary_url = os.environ.get('CLOUDINARY_URL')
 if cloudinary_url:
@@ -116,12 +114,12 @@ WSGI_APPLICATION = 'AddisTalk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-#DATABASES = {
-   # 'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-     #   'NAME': BASE_DIR / 'db.sqlite3',
- #   }
-#}
+# DATABASES = {
+# 'default': {
+#    'ENGINE': 'django.db.backends.sqlite3',
+#   'NAME': BASE_DIR / 'db.sqlite3',
+#   }
+# }
 
 DATABASES = {
     'default': dj_database_url.parse(os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3"))

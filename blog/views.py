@@ -24,31 +24,31 @@ def post_detail(request, slug):
     """
     # Get the post by slug, or return 404 if not found
     post = get_object_or_404(Post, slug=slug, status=1)
-    
+
     # Get comments for this post (show approved + user's unapproved comments)
     comments = post.comments.filter(approved=True)
-    
+
     # If user is logged in, also show their own unapproved comments
     if request.user.is_authenticated:
         user_unapproved = post.comments.filter(
-            author=request.user, 
+            author=request.user,
             approved=False
         )
         comments = comments | user_unapproved
         comments = comments.distinct().order_by('created_on')
-    
+
     # Check if current user has liked the post
     user_has_liked = False
     if request.user.is_authenticated:
         user_has_liked = post.likes.filter(id=request.user.id).exists()
-    
+
     # Prepare context to pass to template
     context = {
         'post': post,
         'comments': comments,
         'user_has_liked': user_has_liked,
     }
-    
+
     return render(request, 'blog/post_detail.html', context)
 
 
@@ -58,10 +58,10 @@ def add_comment(request, slug):
     View to handle comment submission.
     """
     post = get_object_or_404(Post, slug=slug, status=1)
-    
+
     if request.method == 'POST':
         body = request.POST.get('body', '').strip()
-        
+
         if body:
             # Create comment but don't approve it yet
             comment = Comment.objects.create(
@@ -70,14 +70,14 @@ def add_comment(request, slug):
                 body=body,
                 approved=False  # Requires admin approval
             )
-            
+
             messages.success(
-                request, 
+                request,
                 'Your comment has been submitted and is awaiting approval.'
             )
         else:
             messages.error(request, 'Comment cannot be empty.')
-    
+
     return redirect('post_detail', slug=post.slug)
 
 
@@ -88,28 +88,27 @@ def comment_edit(request, slug, comment_id):
     """
     post = get_object_or_404(Post, slug=slug, status=1)
     comment = get_object_or_404(Comment, id=comment_id, post=post)
-    
+
     # Check if user owns the comment
     if comment.author != request.user:
         messages.error(request, 'You can only edit your own comments.')
         return redirect('post_detail', slug=slug)
-    
+
     if request.method == 'POST':
         body = request.POST.get('body', '').strip()
-        
+
         if body:
             comment.body = body
             comment.approved = False  # Needs re-approval after edit
             comment.save()
-            
+
             messages.success(
-                request, 
-                'Comment updated successfully. It will need admin approval again.'
-            )
+                request,
+                'Comment updated successfully. It will need admin approval again.')
             return redirect('post_detail', slug=slug)
         else:
             messages.error(request, 'Comment cannot be empty.')
-    
+
     # If GET request, show edit form
     context = {
         'comment': comment,
@@ -125,20 +124,22 @@ def comment_delete(request, slug, comment_id):
     """
     post = get_object_or_404(Post, slug=slug, status=1)
     comment = get_object_or_404(Comment, id=comment_id, post=post)
-    
+
     # Check if user owns the comment
     if comment.author != request.user:
         messages.error(request, 'You can only delete your own comments.')
         return redirect('post_detail', slug=slug)
-    
+
     if request.method == 'POST':
         comment.delete()
         messages.success(request, 'Comment deleted successfully.')
         return redirect('post_detail', slug=slug)
-    
+
     # If GET request (like from direct URL access), redirect to post
     # This prevents accidental deletion via GET requests
-    messages.warning(request, 'Please use the delete button in the comments section.')
+    messages.warning(
+        request,
+        'Please use the delete button in the comments section.')
     return redirect('post_detail', slug=slug)
 
 
@@ -149,7 +150,7 @@ def post_like(request, slug):
     View to handle post likes (AJAX).
     """
     post = get_object_or_404(Post, slug=slug, status=1)
-    
+
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
         liked = False
@@ -158,7 +159,7 @@ def post_like(request, slug):
         post.likes.add(request.user)
         liked = True
         message = "You liked this post."
-    
+
     return JsonResponse({
         'liked': liked,
         'like_count': post.likes.count(),
@@ -174,12 +175,12 @@ def comment_confirm_delete(request, slug, comment_id):
     """
     post = get_object_or_404(Post, slug=slug, status=1)
     comment = get_object_or_404(Comment, id=comment_id, post=post)
-    
+
     # Check if user owns the comment
     if comment.author != request.user:
         messages.error(request, 'You can only delete your own comments.')
         return redirect('post_detail', slug=slug)
-    
+
     context = {
         'post': post,
         'comment': comment,
