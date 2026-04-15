@@ -149,6 +149,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
