@@ -1,5 +1,6 @@
 import os
 
+os.environ.setdefault('DEVELOPMENT', '1')
 os.environ.setdefault(
     "DATABASE_URL",
     (
@@ -13,4 +14,4 @@ os.environ.setdefault(
     "CLOUDINARY_URL", "cloudinary://298555435314485:M3YLT_DZJWHDIbYwPYwZyuCUvAQ@dsqzcr6yc")
 os.environ.setdefault('EMAIL_HOST_PASS', 'meng knqm cnzs qkow')
 os.environ.setdefault('EMAIL_HOST_USER', 'eandachew@gmail.com')
-os.environ.setdefault('DEVELOPMENT', 'True')
+
