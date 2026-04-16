@@ -15,6 +15,8 @@ import cloudinary.uploader
 import cloudinary
 import os
 import sys
+if os.path.isfile('env.py'):
+    env_module = __import__('env')
 import dj_database_url
 from pathlib import Path
 from urllib.parse import urlparse

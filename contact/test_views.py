@@ -232,7 +232,7 @@ class TestContactViews(TestCase):
             'message': long_message
         }
 
-        response = self.client.post(
+        self.client.post(
             reverse('contact'),
             data=long_data,
             follow=True

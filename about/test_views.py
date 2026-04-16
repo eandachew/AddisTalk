@@ -1,6 +1,5 @@
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
-from django.core.exceptions import ObjectDoesNotExist
 from .models import About
 
 
@@ -234,7 +233,7 @@ class TestAboutViews(TestCase):
 
     def test_about_page_special_characters(self):
         """Test that special characters in content render correctly"""
-        special_about = About.objects.create(
+        About.objects.create(
             title="About with <special> &chars;",
             content="Content with 'quotes', <html> tags, & ampersands",
             updated_on="2024-01-01 12:00:00"
@@ -254,7 +253,7 @@ class TestAboutViews(TestCase):
         About.objects.all().delete()
 
         # Create entry with null updated_on
-        about_null = About.objects.create(
+        About.objects.create(
             title="No Update Date",
             content="Content without update date"
             # updated_on will be auto_now=True or null based on your model
@@ -313,7 +312,7 @@ class TestAboutViewsEdgeCases(TestCase):
         self.assertEqual(response1.context['about'], about1)
 
         # Create newer entry in same second (edge case)
-        about2 = About.objects.create(
+        About.objects.create(
             title="Second",
             content="Second content",
             updated_on="2024-01-01 10:00:00"  # Same timestamp!

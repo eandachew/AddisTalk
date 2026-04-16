@@ -64,7 +64,7 @@ def add_comment(request, slug):
 
         if body:
             # Create comment but don't approve it yet
-            comment = Comment.objects.create(
+            Comment.objects.create(
                 post=post,
                 author=request.user,
                 body=body,
