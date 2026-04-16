@@ -1,6 +1,5 @@
 import os
 
-os.environ.setdefault('DEVELOPMENT', '1')
 os.environ.setdefault(
     "DATABASE_URL",
     (
