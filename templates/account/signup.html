@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
-{% load i18n %} 
+{% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block head_title %}{% trans "Sign Up" %}{% endblock %}
 
@@ -55,74 +56,8 @@
                             <form class="signup" method="POST" action="{% url 'account_signup' %}">
                                 {% csrf_token %}
                                 
-                                <!-- Username Field -->
-                                <div class="mb-4">
-                                    <label for="id_username" class="form-label">
-                                        <i class="bi bi-person-badge me-1"></i>
-                                        {% trans "Username" %} *
-                                    </label>
-                                    <input type="text" 
-                                           name="username" 
-                                           id="id_username" 
-                                           class="form-control form-control-lg"
-                                           placeholder="{% trans 'Choose a username' %}"
-                                           required
-                                           autofocus
-                                           autocomplete="username">
-                                    <div class="form-text">
-                                        {% trans "150 characters or fewer. Letters, digits and @/./+/-/_ only." %}
-                                    </div>
-                                </div>
+                                {{ form|crispy }}
                                 
-                                <!-- Email Field -->
-                                <div class="mb-4">
-                                    <label for="id_email" class="form-label">
-                                        <i class="bi bi-envelope me-1"></i>
-                                        {% trans "Email Address" %} *
-                                    </label>
-                                    <input type="email" 
-                                           name="email" 
-                                           id="id_email" 
-                                           class="form-control form-control-lg"
-                                           placeholder="{% trans 'Enter your email' %}"
-                                           required
-                                           autocomplete="email">
-                                </div>
-                                
-                                <!-- Password Field -->
-                                <div class="mb-4">
-                                    <label for="id_password1" class="form-label">
-                                        <i class="bi bi-lock me-1"></i>
-                                        {% trans "Password" %} *
-                                    </label>
-                                    <input type="password" 
-                                           name="password1" 
-                                           id="id_password1" 
-                                           class="form-control form-control-lg"
-                                           placeholder="{% trans 'Create a password' %}"
-                                           required
-                                           autocomplete="new-password">
-                                    <div class="form-text">
-                                        {% trans "Use a strong password with at least 8 characters." %}
-                                    </div>
-                                </div>
-                                
-                                <!-- Confirm Password Field -->
-                                <div class="mb-4">
-                                    <label for="id_password2" class="form-label">
-                                        <i class="bi bi-lock-fill me-1"></i>
-                                        {% trans "Confirm Password" %} *
-                                    </label>
-                                    <input type="password" 
-                                           name="password2" 
-                                           id="id_password2" 
-                                           class="form-control form-control-lg"
-                                           placeholder="{% trans 'Confirm your password' %}"
-                                           required
-                                           autocomplete="new-password">
-                                </div>
-                                
-                                <!-- Hidden redirect field -->
                                 {% if redirect_field_value %}
                                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
                                 {% endif %}
