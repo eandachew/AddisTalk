@@ -12,5 +12,5 @@ os.environ.setdefault(
     "SECRET_KEY", "django-insecure-91lk-8r&n^8np*ujmousev3tmvxa(mae)ntro!-&!and(ce!4e")
 os.environ.setdefault(
     "CLOUDINARY_URL", "cloudinary://298555435314485:M3YLT_DZJWHDIbYwPYwZyuCUvAQ@dsqzcr6yc")
-os.environ.setdefault('EMAIL_HOST_PASS', 'meng knqm cnzs qkow')
+os.environ.setdefault('EMAIL_HOST_PASS', 'ulxy bwpl fyse samp')
 os.environ.setdefault('EMAIL_HOST_USER', 'eandachew@gmail.com')
