@@ -46,7 +46,8 @@ if cloudinary_url:
     cloudinary.config(
         cloud_name=url.hostname,
         api_key=url.username,
-        api_secret=url.password
+        api_secret=url.password,
+        secure=True
     )
 
 # Application definition
