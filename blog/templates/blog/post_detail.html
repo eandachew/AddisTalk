@@ -94,7 +94,7 @@
                     <!-- Post Body -->
                     <div class="post-content mb-5">
                         <div class="content-wrapper fs-5 lh-base">
-                            {{ post.content|linebreaks }}
+                            {{ post.content|safe }}
                         </div>
                     </div>
                     
@@ -241,7 +241,7 @@
                             </div>
                             
                             <div class="comment-body mt-3">
-                                <p class="mb-0">{{ comment.body|safe }}</p>
+                                <p class="mb-0">{{ comment.body|linebreaks }}</p>
                             </div>
                             
                             <div class="comment-footer mt-3 pt-2 border-top">
