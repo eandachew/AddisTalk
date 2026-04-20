@@ -47,7 +47,7 @@
                         <p class="text-muted">
                             By {{ post.author.username }} on {{ post.created_on|date:"F d, Y" }}
                         </p>
-                        <p>{{ post.content|truncatewords:30 }}</p>
+                        <p>{{ post.content|striptags|truncatewords:30 }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary btn-sm">
                                 Read More
