@@ -1,4 +1,3 @@
-it says alt image of hero button can much the image title only and change that ever where where there is alt image of hero button # Testing 
 ## Table of Contents
 
 - [User Stories](#user-stories)
