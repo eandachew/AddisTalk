@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://addistalk-22f34f7eacaf.herokuapp.com/sitemap.xml
