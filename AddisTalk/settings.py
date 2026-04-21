@@ -47,7 +47,8 @@ if cloudinary_url:
         cloud_name=url.hostname,
         api_key=url.username,
         api_secret=url.password,
-        secure=True
+        secure=True,
+        analytics=False,
     )
 
 # Application definition
