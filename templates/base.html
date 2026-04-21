@@ -1,5 +1,4 @@
 {% load static %}
-
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
@@ -11,19 +10,18 @@
     <meta name="description" content="AddisTalk - A platform for Ethiopian perspectives and meaningful discussions on culture, identity, and current events bridging Ireland and Ethiopia.">
     <title>AddisTalk</title>
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://res.cloudinary.com">
     
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     
-    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" crossorigin="anonymous">
+    
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">
@@ -93,9 +91,7 @@
         </div>
     </nav>
 
-    <!-- Main content block -->
     <main class="py-5" style="margin-top: 70px;">
-        <!-- Django Messages -->
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
@@ -124,12 +120,9 @@
             </div>
         </div>
 
-        {% block content %}
-        <!-- Child templates will inject content here -->
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
     <footer class="bg-dark text-light py-4 mt-5">
         <div class="container">
             <div class="row">
@@ -145,45 +138,27 @@
                     <div class="world-times">
                         {% if time_error %}
                         <small class="text-warning">
-                            <i class="bi bi-exclamation-triangle me-1"></i>
-                            Using estimated times
+                            <i class="bi bi-exclamation-triangle me-1"></i> Using estimated times
                         </small>
                         {% endif %}
-                        
                         <div class="time-item mb-2">
                             <div class="d-flex align-items-center">
                                 <span class="flag-icon me-2">🇮🇪</span>
                                 <div>
                                     <div class="fw-medium">Ireland</div>
-                                    <small class="text-light-emphasis">
-                                        {{ ireland_time }} ({{ ireland_timezone }})
-                                    </small>
-                                    <div class="very-small text-muted">{{ ireland_date }}</div>
+                                    <small class="text-light-emphasis">{{ ireland_time }}</small>
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="time-item">
                             <div class="d-flex align-items-center">
                                 <span class="flag-icon me-2">🇪🇹</span>
                                 <div>
                                     <div class="fw-medium">Ethiopia</div>
-                                    <small class="text-light-emphasis">
-                                        {{ ethiopia_time }} ({{ ethiopia_timezone }})
-                                    </small>
-                                    <div class="very-small text-muted">{{ ethiopia_date }}</div>
+                                    <small class="text-light-emphasis">{{ ethiopia_time }}</small>
                                 </div>
                             </div>
                         </div>
-                        
-                        {% if time_difference %}
-                        <div class="time-difference mt-2 pt-2 border-top border-secondary">
-                            <small class="text-info">
-                                <i class="bi bi-clock-history me-1"></i>
-                                {{ time_difference }}
-                            </small>
-                        </div>
-                        {% endif %}
                     </div>
                 </div>
                 
@@ -193,31 +168,18 @@
                         <li><a href="{% url 'home' %}" class="text-light-emphasis text-decoration-none">Home</a></li>
                         <li><a href="{% url 'about' %}" class="text-light-emphasis text-decoration-none">About</a></li>
                         <li><a href="{% url 'contact' %}" class="text-light-emphasis text-decoration-none">Contact</a></li>
-                        <li><a href="/admin/" class="text-light-emphasis text-decoration-none">Admin</a></li>
                     </ul>
                 </div>
             </div>
-            
             <hr class="text-secondary my-4">
             <div class="text-center">
-                <p class="mb-0">
-                    &copy; {% now "Y" %} AddisTalk. All rights reserved. 
-                    <span class="text-muted mx-2">•</span>
-                    <small class="text-light-emphasis">
-                        <i class="bi bi-globe me-1"></i>
-                        Bridging Ireland & Ethiopia
-                    </small>
-                </p>
+                <p class="mb-0">&copy; {% now "Y" %} AddisTalk. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous" defer></script>
     
-    <!-- Custom JavaScript Block -->
-    {% block extras %}
-    <!-- This is EMPTY in base.html, child templates fill it -->
-    {% endblock %}
+    {% block extras %}{% endblock %}
 </body>
 </html>
