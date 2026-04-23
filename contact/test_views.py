@@ -215,8 +215,6 @@ class TestContactViews(TestCase):
         # Check that response has ESCAPED content (Django's auto-escaping)
         # Convert response content to string for comparison
         content_str = response.content.decode('utf-8')
-        
-        # Raw script tags should NOT appear in the response
         self.assertNotIn('<script>alert', content_str)
         # Escaped version SHOULD appear
         self.assertIn('&lt;script&gt;alert', content_str)
@@ -313,7 +311,7 @@ class TestContactViews(TestCase):
 
         # This test checks if form fields appear in expected order in HTML
         content = response.content.decode('utf-8')
-    
+
         if 'name' in content and 'email' in content:
             name_pos = content.find('name')
             email_pos = content.find('email')
