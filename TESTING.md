@@ -30,6 +30,13 @@
   - [Comments](#comments)
   - [Likes](#likes)
   - [Navigation]()
+- [Validators](#validators)
+    + [CSS](#css)
+    + [Javascript](#javascript)
+    + [Python](#python)
+    + [Html](#html)
+- [Responsiveness and Browsers](#responsiveness-and-browsers)
+- [Accessibility](#accessibility)
 
 ## User Stories 
  
@@ -205,4 +212,4 @@ So that I can understand what the site offers.
     - Each app was tested using Django unit testing.
     - Tests were written to test the URLs, Models, Forms, and the Views.
     - To run the tests in the terminal you can type the following command
-    -
+
