@@ -5,6 +5,7 @@
 - [Live Project](#live-project)
 - [Screenshot](#screenshot)
 - [User Stories](#user-stories)
+- [WireFrames](#wireframes)
 - [Database Models and Schema](#database-models-and-schema)
 - [Design](#design)
 - [Features](#features)
@@ -119,7 +120,16 @@ So that I can understand what the site offers.
 - Responsive and readable on all devices. 
  
 --- 
- 
+### WireFrames
+
+- I've created WireFrames using Balsamiq and have included the links to access them in pdf form.
+
+  - Phone
+    - [Wireframes for phones.](readme-images/wireframes/mobile-wireframes.pdf)
+  - Tablet
+    - [Wireframes for tablets.](readme-images/wireframes/tablet-wireframes.pdf)
+  - Desktop
+    - [Wireframes for desktops.](readme-images/wireframes/desktop-wireframes.pdf)
 ## Database models and schema
 
 ### Models
