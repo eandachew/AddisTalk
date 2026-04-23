@@ -202,24 +202,24 @@ class TestContactViews(TestCase):
             follow=True
         )
 
-        # Check message was saved (form should sanitize or accept as-is
-        # depending on your form setup)
+        # Check message was saved
         self.assertEqual(ContactMessage.objects.count(), 1)
         saved_message = ContactMessage.objects.first()
 
-        # Depending on your form/widget configuration, HTML might be escaped or stripped
-        # If using Django's default CharField/TextField, HTML will be stored as-is
-        # If you want to test sanitization, you might need to check the
-        # template rendering
-
-        # At minimum, ensure the data was saved
+        # Data is stored as-is in database (raw input)
         self.assertEqual(saved_message.name, '<script>alert("xss")</script>')
         self.assertEqual(
             saved_message.message,
             '<img src="x" onerror="alert(1)">')
 
-        # Check that response doesn't execute the script
-        self.assertNotIn(b'<script>alert', response.content)
+        # Check that response has ESCAPED content (Django's auto-escaping)
+        # Convert response content to string for comparison
+        content_str = response.content.decode('utf-8')
+        
+        # Raw script tags should NOT appear in the response
+        self.assertNotIn('<script>alert', content_str)
+        # Escaped version SHOULD appear
+        self.assertIn('&lt;script&gt;alert', content_str)
 
     def test_contact_view_long_input(self):
         """Test with very long input data"""
@@ -312,11 +312,8 @@ class TestContactViews(TestCase):
         response = self.client.get(reverse('contact'))
 
         # This test checks if form fields appear in expected order in HTML
-        # You might need to adjust based on your actual template
         content = response.content.decode('utf-8')
-
-        # Find positions of field labels (adjust based on your actual template)
-        # This is a simple example - you might need to customize
+    
         if 'name' in content and 'email' in content:
             name_pos = content.find('name')
             email_pos = content.find('email')

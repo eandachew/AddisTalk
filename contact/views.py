@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils.html import escape
 from .forms import ContactForm
 
 
@@ -14,10 +15,11 @@ def contact_view(request):
             contact_message = form.save(commit=False)
             contact_message.save()
 
+            safe_name = escape(contact_message.name)
+
             messages.success(
                 request,
-                f'Thank you {
-                    contact_message.name}! Your message has been sent successfully. '
+                f'Thank you {safe_name}! Your message has been sent successfully. '
                 'We will get back to you soon.'
             )
 

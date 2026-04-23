@@ -212,4 +212,93 @@ So that I can understand what the site offers.
     - Each app was tested using Django unit testing.
     - Tests were written to test the URLs, Models, Forms, and the Views.
     - To run the tests in the terminal you can type the following command
+    -
+        ```
+            python3 manage.py test
+        ```
+    - To show how much of the app has been covered by the testing I used coverage.
+    - To use coverage first run
+    - ```
+        pip install coverage
+      ```
+    - The run to test the whole app.
+    - ```
+        coverage run --source=. manage.py test
+      ```
+    - Or to test individual apps.
+    - ```
+        coverage run --source=abode manage.py test <app name>
+      ```
+    - Coverage generates a report to show how much of the code has been tested and how much is yet to be tested.
+    - ```
+        coverage report
+      ```
+    - You can then run coverage HTML to show the report on the screen.
+    - ```
+        coverage html
+      ```    
+    - To open the report you can run 
+    - ```
+            python3 -m http.server
+      ```
+    - I've included the reports for each app below.
+    - Some tests for the World Time API may fail due to the free service being unreliable (SSL errors, rate limiting, downtime).
 
+        - 
+            <div float="left"><img src="readme-images/testing/coverage.png" alt="coverage test result"  height="500px" width="400px"/></div>
+
+---
+## Validators
+
+- #### CSS
+    - I passed my CSS through the CSS code validator and it has passesd.
+
+        - <div float="left">
+            <img src="readme-images/testing/css-validation.png" alt="Image of css report" width="500px" height="380px" />
+        </div>
+
+- #### Javascript
+
+     - My javascript was passed thorough jshint.
+
+     - <div float="left">
+        <img src="readme-images/testing/jshint_.png.png.png" alt="Image of jshint" width="500px" height="180px" />
+        </div>
+
+- #### Python
+
+     - My python was passed through a flake8 validating tool to validate it and it all passed.
+
+     - <div float="left">
+        <img src="readme-images/testing/flake8_.png.png.png" alt="Image of flake8 results" width="500px" height="280px" />
+        </div>
+
+- #### Html
+
+     - My Html code was passed through the W3C Markup Validation Service and there are no errors showing.
+
+     - <div float="left">
+        <img src="readme-images/testing/html-validation.png" alt="Image of html results" width="500px" height="280px" />
+        </div>
+
+## Responsiveness and Browsers
+
+- I have tested the site Responsivenessacross Google chrome dev tools. 
+- I have also used the application across different screen sizes.
+- The app has also been used on different browsers to check its compatibility
+    - Google chrome.
+    - Safari
+    - Opera
+    - Microsoft edge
+    - Firefox.
+
+## Accessibility
+
+- The site has been tested for Accessibility using google lighthouse and the Accessibility insights chrome extension.
+- When testing I made several changes to heading elements to improve the Accessibility.
+- I have also ensured that all images have alt text attributes.
+- Upon testing in lighthouse, I have received scores of 96% to 100% across the site.
+
+- <div float="left">
+      <img src="readme-images/testing/Light _house_score.png" alt="Image of lighthouse score results" width="500px" height="280px" />
+      </div>

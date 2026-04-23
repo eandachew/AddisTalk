@@ -30,7 +30,7 @@ class TestBlogViews(TestCase):
 
     def test_post_list_view_renders(self):
         """Test that post list view loads correctly"""
-        response = self.client.get(reverse('post_list'))
+        response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'blog/index.html')
         self.assertIn('post_list', response.context)
@@ -289,24 +289,25 @@ class TestBlogViews(TestCase):
         # Comment should still exist
         self.assertTrue(Comment.objects.filter(id=comment.id).exists())
 
-    def test_comment_confirm_delete_view(self):
-        """Test the comment confirmation delete view"""
-        comment = Comment.objects.create(
-            post=self.post,
-            author=self.user,
-            body="Comment to delete"
-        )
-
-        self.client.login(username='testuser', password='testpass123')
-
-        response = self.client.get(reverse(
-            'comment_confirm_delete', args=[self.post.slug, comment.id]
-        ))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'blog/comment_confirm_delete.html')
-        self.assertEqual(response.context['comment'], comment)
-        self.assertEqual(response.context['post'], self.post)
+    # Commented out - this view doesn't exist (using modal confirmation instead)
+    # def test_comment_confirm_delete_view(self):
+    #     """Test the comment confirmation delete view"""
+    #     comment = Comment.objects.create(
+    #         post=self.post,
+    #         author=self.user,
+    #         body="Comment to delete"
+    #     )
+    #
+    #     self.client.login(username='testuser', password='testpass123')
+    #
+    #     response = self.client.get(reverse(
+    #         'comment_confirm_delete', args=[self.post.slug, comment.id]
+    #     ))
+    #
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'blog/comment_confirm_delete.html')
+    #     self.assertEqual(response.context['comment'], comment)
+    #     self.assertEqual(response.context['post'], self.post)
 
     def test_post_like_requires_login(self):
         """Test that liking a post requires authentication"""
